@@ -12,19 +12,20 @@ var express = require('express'),
 
 var env = process.env.NODE_ENV || 'development',
 	config = require('./config/config')[env],
-	cookie = require('express/node_modules/cookie'),
-	connect = require('express/node_modules/connect'),
+	// cookie = require('express/node_modules/cookie'),
+	// connect = require('express/node_modules/connect'),
+	cookieParser = require('cookie-parser'),
 	mongoose = require('mongoose');
 
 mongoose.connect(config.db);
 
-require('./models/user'); //If more models change to "for *js" 
+require('./models/user'); //If more models change to "for *js"
 
 require('./config/passport')(passport, config);
 
 
 /**
- * To ease development process, we create some initial users, don't use them in production before changing their passwords or 
+ * To ease development process, we create some initial users, don't use them in production before changing their passwords or
  *  creating your own users
  *
  * set env var GCS_NODEREFRESH to the string 'true' if you want to leave the database as is
@@ -63,9 +64,9 @@ io.set('authorization', function (handshakeData, accept) {
 
   if (handshakeData.headers.cookie) {
 
-    handshakeData.cookie = cookie.parse(handshakeData.headers.cookie);
+    handshakeData.cookie = cookieParser(handshakeData.headers.cookie);
 
-    handshakeData.sessionID = connect.utils.parseSignedCookie(handshakeData.cookie['connect.sid'], 'We4aN6chi7');
+    handshakeData.sessionID = cookieParser(handshakeData.cookie['connect.sid'], 'We4aN6chi7');
 
     if (handshakeData.cookie['connect.sid'] === handshakeData.sessionID) {
       return accept('Cookie is invalid.', false);
@@ -73,7 +74,7 @@ io.set('authorization', function (handshakeData, accept) {
 
   } else {
     return accept('No cookie transmitted.', false);
-  } 
+  }
 
   accept(null, true);
 });
@@ -105,9 +106,9 @@ io.sockets.on('connection', function(socket){
 
 	socket.on('pauseAgent', function(data){ //Toggle Paused state for an agent in a queue
 		var pkg = {
-			action: 'QueuePause', 
-			queue: data.queue, 
-			interface: data.interface, 
+			action: 'QueuePause',
+			queue: data.queue,
+			interface: data.interface,
 			paused: data.paused
 		};
 		gcsAmi.send({order: 'QueuePause', payload: pkg});
@@ -115,8 +116,8 @@ io.sockets.on('connection', function(socket){
 
 	socket.on('removeAgent', function(data){ //Remove an agent from a queue
 		var pkg = {
-			action: 'QueueRemove', 
-			queue: data.queue, 
+			action: 'QueueRemove',
+			queue: data.queue,
 			interface: data.interface
 		};
 		gcsAmi.send({order: 'QueueRemove', payload: pkg});

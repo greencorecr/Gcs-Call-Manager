@@ -25,7 +25,5 @@ The first version of this project is based on NodeJS, using Express 3, MongoDB, 
 ## Installation:
 Install nodeJS and mongoDB as specified by their instructions, then download this repository and run _npm install_.
 
-For integration with Asterisk an example guides, please refer to Install.txt.
-
 ##TODO:
 1. Finish this ReadMe
