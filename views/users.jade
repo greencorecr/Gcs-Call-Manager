@@ -1,0 +1,101 @@
+extends layout
+
+block gcsCss
+	link(rel='stylesheet', href='/stylesheets/alertify.core.css')
+	link(rel='stylesheet', href='/stylesheets/alertify.default.css')
+
+block gcsNavbarItems
+	ul.nav.navbar-nav
+		//-li
+			//-a(href="/")
+				//-i.icon-home.icon-large
+				//-|&nbsp;Home
+		li
+			a(href="/queueMonitor")
+				i.icon-desktop.icon-large 
+				|&nbsp;Queues
+		li.active
+			a(href="#")
+				i.icon-user.icon-large 
+				|&nbsp;Users
+		li
+			a(href="/logout")
+				i.icon-off.icon-large 
+				|&nbsp;Logout
+		li
+			a(data-toggle="modal" href="#helpModal")
+				i.icon-question-sign.icon-large
+				|&nbsp;Help
+
+block content
+	div.user-admin-container
+		div.user-list-container.queueHead
+			ul.user-list-ul
+				li.user-list-header
+					span.user-field
+						|Name
+					span.user-field
+						|User
+					span.user-field
+						|E-mail
+				<!-- ko foreach: users -->
+				li.user-list-user(data-bind="click: markSelectedUser, css: {isSelected: id === $root.selectedUser().id}")
+					span.user-field.user-list-name(data-bind="text: name")
+						|&nbsp;--&nbsp;
+					span.user-field.user-list-username(data-bind="text: username")
+						|&nbsp;--&nbsp;
+					span.user-field.user-list-email(data-bind="text: email")
+				<!-- /ko -->
+				li.user-list-controls
+					span.user-list-control-add.gcsBtn(data-bind="click: newUser")
+						i.icon-plus.icon-2x
+		div.user-form-container.infoContainer(data-bind="with: selectedUser")
+			h1(data-bind="visible: !id") Select a user
+			h1(data-bind="visible: id") User:&nbsp;
+				span(data-bind="visible: 'new' == id")
+					|New
+				span(data-bind="text: name")
+			form#createUser(data-bind="visible: id" role="form")
+				div.form-group.user-name
+					label.control-label.col-md-5(for='name')
+						|Name:
+					div.col-md-7
+						input.form-control(name='name', placeholder='Name' data-bind="value: name")
+				div.form-group.user-username
+					label.control-label.col-md-5(for='username')
+						|User:
+					div.col-md-7
+						input.form-control(name='username' placeholder='User' data-bind="value: username")
+				div.form-group.user-password
+					label.control-label.col-md-5(for='password')
+						|Password:
+					div.col-md-7
+						input.form-control(type='password' name='password' placeholder='Password' data-bind="value: password")
+				div.form-group.user-email
+					label.control-label.col-md-5(for='email')
+						|E-mail:
+					div.col-md-7
+						input.form-control(type='email' name='email' placeholder='E-mail' data-bind="value: email")
+				div.form-group.user-role
+					label.control-label.col-md-5(for='role')
+						|Is this an administrator?:
+					div.col-md-7
+						label.user-options No
+							input(type='radio' name='role' value='0' data-bind="checked: role")
+						label.user-options Yes
+							input(type='radio' name='role' value='1' data-bind="checked: role")
+				br
+				div.form-group.user-controls
+					div.col-md-4.col-md-offset-4
+						a.gcsBtn#save(data-bind="click: saveUser")
+							|Save
+						a.gcsBtn#delete(data-bind="click: deleteUser")
+							|Delete
+						a.gcsBtn#cancel(data-bind="click: clearSelectedUser")
+							|Cancel
+
+block gcsScripts
+	script(src="/javascripts/components/alertify.min.js")
+	script(src="/javascripts/components/knockout-2.3.0.js")
+	script(src="/javascripts/components/knockout.viewmodel.min.js")
+	script(src="/javascripts/app/userAdmin.js")
