@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "origin"]
+	url = https://alvaro_figueroa@bitbucket.org/federico_figueroa/gcsasteriskqueuemonitor.git
+	fetch = +refs/*:refs/*
+	mirror = true
+	pushurl = git@github.com:fede2cr/Gcs-Call-Manager.git
