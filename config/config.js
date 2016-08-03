@@ -23,11 +23,10 @@ module.exports = {
 			name: 'Greencore Solutions Queue Monitor'
 		},
 		ami: {
-			//host: '10.42.20.20',
-			host: 'colas.greencore.int',
+			host: 'manager-ip',
 			port: 'default',
-			username: 'dev',
-			password: 'phos7oH6'
+			username: 'user',
+			password: 'password'
 		}
 	},
 	production: {
@@ -38,11 +37,10 @@ module.exports = {
 			name: 'Greencore Solutions Queue Monitor'
 		},
 		ami: {
-			//host: '10.42.20.20',
-			host: 'colas.greencore.int',
+			host: 'manager-ip',
 			port: 'default',
-			username: 'dev',
-			password: 'phos7oH6'
+			username: 'user',
+			password: 'password'
 		}
 	}
 };
