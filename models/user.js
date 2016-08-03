@@ -18,6 +18,7 @@ var UserSchema = new Schema({
 	hashedPassword: {type: String, default: ''},
 	salt: {type: String, default: ''},
 	authToken: {type: String, default: ''},
+	exten: {type: String, default: ''},
 	queues: [{
 		queueId: {type: String},
 		view: {type: String, enum: queueViews}
@@ -44,6 +45,7 @@ UserSchema
 			'name': this.name,
 			'username': this.username,
 			'role': this.role,
+			'exten': this.exten,
 			'email': this.email,
 			'queues': this.queues
 		};
@@ -57,6 +59,10 @@ var validatePresenceOf = function(value) {
 UserSchema.path('name').validate(function (name){
 	return name.length;
 }, 'Name cannot be blank');
+
+UserSchema.path('exten').validate(function (exten){
+	return exten.length;
+}, 'Extention cannot be blank');
 
 UserSchema.path('email').validate(function (email){
 	return emailRegexp.test(email);
@@ -146,4 +152,4 @@ UserSchema.methods = {
 };
 
 
-mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

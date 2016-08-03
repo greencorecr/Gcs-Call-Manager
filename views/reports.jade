@@ -1,0 +1,146 @@
+extends layout
+
+block gcsCss
+	link(rel='stylesheet', href='/stylesheets/alertify.core.css')
+	link(rel='stylesheet', href='/stylesheets/alertify.default.css')
+	link(rel='stylesheet', href='/stylesheets/datepick/jquery.datepick.css')
+
+block gcsNavbarItems
+	ul.nav.navbar-nav
+		if(role)
+			li
+				a(href="/queueMonitor")
+					i.icon-desktop.icon-large 
+					|&nbsp;Queues
+			li
+				a(href="/userAdmin")
+					i.icon-user.icon-large 
+					|&nbsp;Users
+			li.active
+				a(href="#")
+					i.icon-file-text.icon-large 
+					|&nbsp;Reports
+		else
+			li
+				a(href="/reportsAgents")
+					i.icon-archive.icon-large 
+					|&nbsp;Agents
+		li
+			a(href="/logout")
+				i.icon-off.icon-large 
+				|&nbsp;Logout
+		li
+			a(data-toggle="modal" href="#helpModal")
+				i.icon-question-sign.icon-large
+				|&nbsp;Help
+	div.nav.nav-pills
+		p.navbar-text Queues:
+		<!-- ko foreach: $data.queues -->
+		<!-- ko if: "default" != id() -->
+		li
+			a.queue(data-bind="attr: {'id': id}, text: id, click: markSelectedQueue")
+		<!-- /ko -->
+		<!-- /ko -->
+
+block content
+	br
+	br
+	br
+	div.col-md-8.col-sm-6.queueHead
+		div(data-bind="with: selectedQueue")
+			div.queueID
+				|Agents in Queue 
+				span(data-bind="text: id")
+			div.statsDataReports
+				li.liHover(data-bind="attr: {'id': id}, visible: id != '', click: agentsChart")
+					span Agents chart 
+						span.icon-stack.liButton
+							i.icon-circle.icon-stack-base.actionBtnBase
+							i.icon-bar-chart.actionBtnIcon
+				<!-- ko foreach: statsCalls -->
+				li.liHover.liDynamic(data-bind="click: markSelectedStat")
+					span(data-bind="text: name")
+					span.statValue(data-bind="text: length")
+				<!-- /ko -->
+		
+		div.info-queue-container(data-bind="with: selectedStat")
+			div.queue-list-container
+				ul.call-list-ul(data-bind="visible: name != ''")
+					li.user-list-header
+						span.queueCall-field
+							|Date
+						span.queueCall-field
+							|Origin
+						span.queueCall-field
+							|Destiny
+					<!-- ko foreach: calls -->
+					li.user-list-user
+						span.queueCall-field.user-list-name(data-bind="text: date")
+							|&nbsp;&nbsp;
+						span.queueCall-field.user-list-name(data-bind="text: calleridnum")
+							|&nbsp;&nbsp;
+						span.queueCall-field.user-list-name(data-bind="text: connectedlinenum")
+							|&nbsp;&nbsp;
+					<!-- /ko -->
+
+		div.agentsContainer(data-bind='with: agentsCharts')
+			div.agent(data-bind='visible: agentsCharts')
+				div.agentTop(data-bind='foreach: agents')
+					div.agentStatus
+						div.agentIcon
+						div.agentTopName
+							span(data-bind="text: name")
+						div.agentTopId
+							|ext.
+							span(data-bind="text: id")
+							span(data-bind="visible: paused() == 1")
+								| &nbsp;--> Paused
+
+		div(data-bind='visible: agentsCharts().agentsCharts != false')
+			div(style="height: 400px;margin-left: 30px;")
+				div.searchContainer
+					
+					label.control-label From: 
+						input#dateFrom
+					br
+					label.control-label Until: 
+						input#dateUntil
+					div.statsDataReports
+						button#range.liHover Search							
+						button#AllPauses.liHover All
+
+				div(style="float:left;")
+					#dashboard
+			div
+				div.info-queue-container(data-bind='with: pausedAgent')
+					div.queue-list-container
+						div.queueID
+							|Pauses from agent 
+							span(data-bind="text: _id")
+						ul.call-list-ul
+							li.user-list-header
+								span.queueCall-field
+									|Start
+								span.queueCall-field
+									|End
+								span.queueCall-field
+									|Pausedtime
+							<!-- ko foreach: pauses -->
+							li.user-list-user
+								span.queueCall-field.user-list-name(data-bind="text: epochS")
+									|&nbsp;&nbsp;
+								span.queueCall-field.user-list-name(data-bind="text: epochF")
+									|&nbsp;&nbsp;
+								span.queueCall-field.user-list-name(data-bind="text: timeD")
+									|&nbsp;&nbsp;
+							<!-- /ko -->
+
+block gcsScripts
+	script(src="/javascripts/components/alertify.min.js")
+	script(src="/javascripts/components/knockout-2.3.0.js")
+	script(src="/javascripts/components/knockout.viewmodel.min.js")
+	script(src="/javascripts/components/canvasjs.js")
+	script(src="/javascripts/components/datepick/jquery.plugin.js")
+	script(src="/javascripts/components/datepick/jquery.datepick.js")
+	script(src="/socket.io/socket.io.js")
+	script(src="/javascripts/app/queueReports.js")

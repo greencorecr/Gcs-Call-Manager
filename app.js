@@ -14,13 +14,15 @@ var env = process.env.NODE_ENV || 'development',
 	config = require('./config/config')[env],
 	cookie = require('express/node_modules/cookie'),
 	connect = require('express/node_modules/connect'),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	moment = require('moment');
+
 
 mongoose.connect(config.db);
 
 require('./models/user'); //If more models change to "for *js" 
 
-require('./config/passport')(passport, config);
+require('./config/passport')(passport);
 
 
 /**
@@ -30,10 +32,10 @@ require('./config/passport')(passport, config);
  * set env var GCS_NODEREFRESH to the string 'true' if you want to leave the database as is
  *
  */
-if ('development' === env && 'true' !== process.env.GCS_NOREFRESH) {
+/*if ('development' === env && 'true' !== process.env.GCS_NOREFRESH) {
 	console.log('Data is beeing loaded into database, all prev data in the collections is lost');
 	require('./config/initDevData');
-}
+}*/
 
 var app = express();
 
@@ -80,9 +82,11 @@ io.set('authorization', function (handshakeData, accept) {
 
 /**
  * React to client events from socket.io
- *
  **/
 io.sockets.on('connection', function(socket){
+	socket.on('login', function	() {
+		gcsAmi.send({order: 'QueueLogin'});
+	});
 
 	socket.on('userPrefs', function	(data) {
 		var User = mongoose.model('User');
@@ -110,7 +114,7 @@ io.sockets.on('connection', function(socket){
 			interface: data.interface, 
 			paused: data.paused
 		};
-		gcsAmi.send({order: 'QueuePause', payload: pkg});
+		gcsAmi.send({order: 'QueuePause', payload: pkg, origin: data.origin, extenUser: data.id});
 	});
 
 	socket.on('removeAgent', function(data){ //Remove an agent from a queue
@@ -119,7 +123,7 @@ io.sockets.on('connection', function(socket){
 			queue: data.queue, 
 			interface: data.interface
 		};
-		gcsAmi.send({order: 'QueueRemove', payload: pkg});
+		gcsAmi.send({order: 'QueueRemove', payload: pkg, origin: data.origin, extenUser: data.id});
 	});
 
 	socket.on('spyAgent', function(data){ //Create ChannelSpy channel for the supervisor
@@ -144,12 +148,48 @@ io.sockets.on('connection', function(socket){
 		gcsAmi.send({order: 'spyAgent', payload: pkg});
 	});
 
+	socket.on('queueReport', function(){ 
+		gcsAmi.send({order: 'queueReport'});
+	});
+
+	socket.on('agentReport', function(extenUser){  
+		gcsAmi.send({order: 'agentReport', extenUser: extenUser});
+	});
+
+	var Events = require('./config/Events');
+	socket.on('agentsCharts', function(agents){ 
+		// console.log(agents);
+		var match = {'$or': agents }
+		Events.agentsCharts(match, function(pauses){
+			// console.log(pauses)
+			socket.emit('agentsCharts', pauses);			
+		})
+	});
+
+	socket.on('filterPauses', function(range){ 
+		var from = moment(range.from).hour('00').unix();
+		var until = moment(range.until).hour('23').minute('59').second('59').unix();
+		if(range.or == 0){
+			var match = {'$or': range.agents , 'epochStart': {'$gte': from, '$lte': until}}
+			Events.agentsCharts(match, function(pauses){
+				// console.log(pauses)
+				socket.emit('agentsCharts', pauses);			
+			})
+		} else {
+			var search = {'agent': range.agents , 'epochStart': {'$gte': from, '$lte': until}}
+			Events.singleAgentChart(search, function(pauses){
+				// console.log(pauses)
+				socket.emit('singleAgentChart', pauses);			
+			})
+		}
+	});
+
 	/**
 	 *  In order to safely unbind the listeners when the user disconnect, they must be called with a named callback
 	 *   not an anonymous function, so here are the callbacks
 	 *
 	 */
-	function freshData(payload) {
+	function freshData(payload) {	
 		socket.emit('freshData', payload);
 	}
 
@@ -161,22 +201,35 @@ io.sockets.on('connection', function(socket){
 		socket.emit('agentRemoved', payload);
 	}
 
+	function queueReport(payload) {// console.log(payload);
+		socket.emit('queueReport', payload);
+	}
+
+	function agentPaused(payload) { 
+		socket.emit('agentPaused', payload);
+	}
+
+
 	/** Then we add the listeners **/
 	gcsAmi.on('newAgent', newAgent);
 	gcsAmi.on('agentRemoved', agentRemoved);
 	gcsAmi.on('freshData', freshData);
+	gcsAmi.on('queueReport', queueReport);
+	gcsAmi.on('agentPaused', agentPaused);
 
 	socket.on('disconnect', function() {
 		/** All non socket.io listeners must be cleaned at disconnect **/
 		gcsAmi.removeListener('newAgent', newAgent);
 		gcsAmi.removeListener('agentRemoved', agentRemoved);
 		gcsAmi.removeListener('freshData', freshData);
+		gcsAmi.removeListener('queueReport', queueReport);
+		gcsAmi.removeListener('agentPaused', agentPaused);
 	});
 
 });
 
 server.listen(config.port, function () {
-  console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
+	console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
 });
 
 

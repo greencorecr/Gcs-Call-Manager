@@ -34,6 +34,7 @@ var userViewModel = ko.viewmodel.fromModel({users: []}, {
 					name: '',
 					username: '',
 					email: '',
+					exten: '',
 					password: '',
 					role: '0',
 				});
@@ -51,6 +52,10 @@ function parseMongooseErrorMsg(err) {
 				break;
 			case 'email':
 				$('.user-email').addClass('has-error');
+				alertify.log('Error: '+err[key].message, 'error');
+				break;
+			case 'exten':
+				$('.user-exten').addClass('has-error');
 				alertify.log('Error: '+err[key].message, 'error');
 				break;
 			case 'username':
@@ -80,6 +85,7 @@ function clearSelectedUser(newId) {
 		name: '',
 		username: '',
 		email: '',
+		exten: '',
 		password: '',
 		role: '0'
 	});

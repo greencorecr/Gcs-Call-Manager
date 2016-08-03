@@ -1,0 +1,149 @@
+extends layout
+
+block gcsCss
+	link(rel='stylesheet', href='/stylesheets/alertify.core.css')
+	link(rel='stylesheet', href='/stylesheets/alertify.default.css')
+	link(rel='stylesheet', href='/stylesheets/datepick/jquery.datepick.css')
+
+block gcsNavbarItems
+	ul.nav.navbar-nav
+		if(role)
+			li
+				a(href="/queueMonitor")
+					i.icon-desktop.icon-large 
+					|&nbsp;Queues
+			li
+				a(href="/userAdmin")
+					i.icon-user.icon-large 
+					|&nbsp;Users
+			li
+				a(href="/reports")
+					i.icon-file-text.icon-large 
+					|&nbsp;Reports
+		else
+			li.active
+				a(href="#")
+					i.icon-archive.icon-large 
+					|&nbsp;Agents
+					button#agentReport(hidden value=exten)
+		li
+			a(href="/logout")
+				i.icon-off.icon-large 
+				|&nbsp;Logout
+		li
+			a(data-toggle="modal" href="#helpModal")
+				i.icon-question-sign.icon-large
+				|&nbsp;Help
+block content
+	br
+	br
+	br
+	div.col-md-8
+		<!-- ko foreach: users -->
+
+		div.agentTop(style="float: left")
+			div.agentStatus
+				div.agentIcon(data-bind="statusIcon: status()")
+				div.agentTopName
+					span(data-bind="text: name")
+				div.agentTopId
+					|ext.
+					span(data-bind="text: id")
+					span(data-bind="visible: paused() == 1")
+						| &nbsp;--> Paused
+
+		div.statsDataReports
+			li.liHover.liDynamic
+				span Talking to 
+				span.statValue(data-bind="text: caller")
+			li.liHover
+				span Pause 
+					span.icon-stack.liButton(data-bind="click: pauseAgent")
+						i.icon-circle.icon-stack-base.actionBtnBase
+						i.icon-pause.actionBtnIcon
+				li.liHover(data-bind="click: agentsChart")
+					span Agent chart 
+						span.icon-stack.liButton
+							i.icon-circle.icon-stack-base.actionBtnBase
+							i.icon-bar-chart.actionBtnIcon
+
+
+			<!-- ko foreach: statsCalls -->
+			li.liHover.liDynamic(data-bind="click: markSelectedStat")
+				span(data-bind="text: name")
+				span.statValue(data-bind="text: length")
+			<!-- /ko -->
+		<!-- /ko -->
+
+		
+	div(data-bind='visible: pauses().show == false')
+		div.info-queue-container.queueHead(data-bind="with: selectedStat")
+			div.queue-list-container
+				ul.call-list-ul
+					li.user-list-header
+						span.call-field
+							|Date
+						span.call-field
+							|Origin
+						span.call-field
+							|Destiny
+						span.call-field
+							|Status
+					<!-- ko foreach: calls -->
+					li.user-list-user
+						span.call-field.user-list-name(data-bind="text: date")
+							|&nbsp;&nbsp;
+						span.call-field.user-list-name(data-bind="text: calleridnum")
+							|&nbsp;&nbsp;
+						span.call-field.user-list-name(data-bind="text: connectedlinenum")
+							|&nbsp;&nbsp;
+						span.call-field.user-list-name(data-bind="text: status")
+							|&nbsp;&nbsp;
+					<!-- /ko -->
+
+	div.queueHead(data-bind='visible: pauses().show != false')
+		div
+			div(style="height: 400px;margin: 30px;")
+				div.searchContainer
+					label.control-label From: 
+						input#dateFrom
+					br
+					label.control-label Until: 
+						input#dateUntil
+					div.statsDataReports
+						button#range.liHover Search							
+						button#AllPauses.liHover All
+
+				div(style="float:left;")
+					#dashboard
+			div
+				div.info-queue-container(data-bind='with: pauses')
+					div.queue-list-container
+						ul.call-list-ul
+							li.user-list-header
+								span.queueCall-field
+									|Start
+								span.queueCall-field
+									|End
+								span.queueCall-field
+									|Pausedtime
+							<!-- ko foreach: pausesArray -->
+							li.user-list-user
+								span.queueCall-field.user-list-name(data-bind="text: epochS")
+									|&nbsp;&nbsp;
+								span.queueCall-field.user-list-name(data-bind="text: epochF")
+									|&nbsp;&nbsp;
+								span.queueCall-field.user-list-name(data-bind="text: timeD")
+									|&nbsp;&nbsp;
+							<!-- /ko -->
+
+
+block gcsScripts
+	script(src="/javascripts/components/alertify.min.js")
+	script(src="/javascripts/components/knockout-2.3.0.js")
+	script(src="/javascripts/components/knockout.viewmodel.min.js")
+	script(src="/javascripts/components/canvasjs.js")
+	script(src="/javascripts/components/datepick/jquery.plugin.js")
+	script(src="/javascripts/components/datepick/jquery.datepick.js")
+	script(src="/socket.io/socket.io.js")
+	script(src="/javascripts/app/agentsReports.js")

@@ -7,22 +7,24 @@ block gcsCss
 
 block gcsNavbarItems
 	ul.nav.navbar-nav
-		//-li
-			//-a(href="/")
-				//-i.icon-home.icon-large
-				//-|&nbsp;Home
-		li.active
-			a(href="#")
-				i.icon-desktop.icon-large 
-				|&nbsp;Queues
-		//-li
-			//-a(href="/profile")
-				//-i.icon-user.icon-large 
-				//-|&nbsp;Profile
-		li
-			a(href="/userAdmin")
-				i.icon-user.icon-large 
-				|&nbsp;Users
+		if(role)
+			li.active
+				a(href="#")
+					i.icon-desktop.icon-large 
+					|&nbsp;Queues
+			li
+				a(href="/userAdmin")
+					i.icon-user.icon-large 
+					|&nbsp;Users
+			li
+				a(href="/reports")
+					i.icon-file-text.icon-large 
+					|&nbsp;Reports
+		else
+			li
+				a(href="/reportsAgents")
+					i.icon-archive.icon-large 
+					|&nbsp;Agents
 		li
 			a(href="/logout")
 				i.icon-off.icon-large 
@@ -69,6 +71,7 @@ block content
 				div.modal-footer
 					button.btn.btn-default(type="button" data-dismiss="modal")
 						|Close
+
 	div.row#dataContainer
 		div.col-md-8.col-sm-6
 			<!-- ko foreach: $data.queues -->
@@ -78,25 +81,42 @@ block content
 					div.queueID(data-bind="click: hideQueue, updateViewPrefs: id()")
 						|Agents in Queue 
 						span(data-bind="text: id")
-					div.statsData
+					div.statsData(data-bind="click: detailedQueue")
 						div.stat
 							|Completed: 
 							span.statValue(data-bind="text: completed")
 						div.stat
 							|Abandoned: 
-							span.statValue(data-bind="text: abandoned")
+							span.statValue(data-bind="text: abandonedDay")
 						div.stat
 							|Hold Time: 
 							span.statValue(data-bind="text: holdtime")
 						div.stat
-							|Wait Time:
+							|Wait Time: 
 							span.statValue(data-bind="text: waiting_calls")
+
+					
+						div.agentDrop
+							ul.agentsUl.infoACDrop
+								<!-- ko if: statsCalls().length < 1 -->
+								li
+									span.infoLabel No abandoned calls
+								<!-- /ko -->
+								<!-- ko ifnot: statsCalls().length < 1 -->
+								<!-- ko foreach: statsCalls -->
+								li
+									span.infoLabel From:&nbsp
+									span(data-bind="text: connectedlinename")
+									span.infoLabel &nbspDate:&nbsp
+									span(data-bind="text: date")
+								<!-- /ko -->
+								<!-- /ko -->
 
 				<!-- ko if: agents().length < 1 -->
 				div.emptyAlert(data-bind="visible: agents().length < 1")
 					| Empty Queue
 				<!-- /ko -->
-				
+
 				div.agentsContainer(data-bind='foreach: agents')
 					div.agent
 						div.agentTop(data-bind="click: markSelectedAgent")
@@ -155,90 +175,116 @@ block content
 								span.icon-stack
 									i.icon-circle.icon-stack-base.actionBtnBase
 									i.icon-headphones.actionBtn
+
 			<!-- /ko -->
 			<!-- /ko -->
 		//-This info Window should only be sent to desktop and tablet users, View renderer needs to be upgraded
-		div.col-md-4.col-sm-6.hidden-xs.infoContainer(data-bind="with: selectedAgent")
+		div.col-md-4.col-sm-6.hidden-xs.infoContainer
 			//-selectedAgent is an extended observable that will hold the selected agent information
-			div#infoAgentData
-				center
-					h1
-						span(data-bind="fadeVisible: queue")
-							i.icon-user &nbsp;
-						span(data-bind="text: name")
-				div.infoValidData(data-bind="fadeVisible: queue")
+			div(data-bind="with: selectedAgent")
+				div#infoAgentData(data-bind="fadeVisible: queue")
 					center
-						h4
-							span.infoLabel Information for queue:&nbsp;
-							span(data-bind="text: queue")
-						h2
+						h1
+							span(data-bind="fadeVisible: queue")
+								i.icon-user &nbsp;
+							span(data-bind="text: name")
+					div.infoValidData(data-bind="fadeVisible: queue")
+						center
+							h4
+								span.infoLabel Information for queue:&nbsp;
+								span(data-bind="text: queue")
+							h2
+								span(data-bind="text: id")
+								span(data-bind="fadeVisible: paused() == 1")
+									|&nbsp;/&nbsp;Paused
+							button.gcsBtn(data-bind="click: clearAgentData")
+								|Dismiss
+						ul.infoContainerUl
+							li
+								span.infoLabel The agent is now:&nbsp
+								span(data-bind="text: statusName")
+								span.infoIcon(data-bind="statusIcon: status()")
+							li
+								span.infoLabel And is talking to:&nbsp;
+								span(data-bind="text: caller")
+								span.infoIcon.icon-stack
+									i.icon-circle-blank.icon-stack-base
+									i.icon-comments-alt
+							li
+								span.infoLabel The last call was:&nbsp;
+								span(data-bind="text: lastCall")
+								span.infoIcon.icon-stack
+									i.icon-circle-blank.icon-stack-base
+									i.icon-time
+							li
+								span.infoLabel Has taken:&nbsp;
+								span(data-bind="text: taken")
+								span.infoLabel &nbsp;calls
+								span.infoIcon.icon-stack
+									i.icon-circle-blank.icon-stack-base
+									i.icon-check
+
+				div#actionData(data-bind="fadeVisible: queue")
+					center
+						table#actionBtnTable
+							tr
+								td
+									button.actionBtn(data-bind="click: removeAgent, enable: queue")
+											span.icon-stack
+												i.icon-circle.icon-stack-base.actionBtnBase
+												i.icon-trash.actionBtnIcon
+
+								td
+									button.actionBtn(data-bind="click: pauseAgent, enable: queue")
+											span.icon-stack
+												i.icon-circle.icon-stack-base.actionBtnBase
+												i.icon-pause.actionBtnIcon
+
+								td
+									button.actionBtn(data-bind="click: toggleSpyForm, enable: isTalking(status())")
+											span.icon-stack
+												i.icon-circle.icon-stack-base.actionBtnBase
+												i.icon-headphones.actionBtnIcon
+							tr
+								td
+									|Remove
+								td
+									|Pause
+								td
+									|Monitor
+
+					div.spyAgentFormContainer
+						form#spyForm(data-bind="submit: spyAgent, checkStatusForSpy: status()")
+							div
+								label Supervisor Extension:
+								input(type="text" id="spyDst" name="supExtension" placeholder="Enter the Supervisor Extension")
+							button.gcsBtn(type="submit") Create
+							button.gcsBtn(data-bind="click: toggleSpyForm") Cancel		
+		
+			div(data-bind="with: selectedQueue")
+				div#infoQueueData
+					center
+						h1
+							span(data-bind="fadeVisible: id != ''")
+								i.icon-group &nbsp;
 							span(data-bind="text: id")
-							span(data-bind="fadeVisible: paused() == 1")
-								|&nbsp;/&nbsp;Paused
-						button.gcsBtn(data-bind="click: clearAgentData")
-							|Dismiss
-					ul.infoContainerUl
-						li
-							span.infoLabel The agent is now:&nbsp
-							span(data-bind="text: statusName")
-							span.infoIcon(data-bind="statusIcon: status()")
-						li
-							span.infoLabel And is talking to:&nbsp;
-							span(data-bind="text: caller")
-							span.infoIcon.icon-stack
-								i.icon-circle-blank.icon-stack-base
-								i.icon-comments-alt
-						li
-							span.infoLabel The last call was:&nbsp;
-							span(data-bind="text: lastCall")
-							span.infoIcon.icon-stack
-								i.icon-circle-blank.icon-stack-base
-								i.icon-time
-						li
-							span.infoLabel Has taken:&nbsp;
-							span(data-bind="text: taken")
-							span.infoLabel &nbsp;calls
-							span.infoIcon.icon-stack
-								i.icon-circle-blank.icon-stack-base
-								i.icon-check
-						
-			div#actionData
-				center
-					table#actionBtnTable
-						tr
-							td
-								button.actionBtn(data-bind="click: removeAgent, enable: queue")
-										span.icon-stack
-											i.icon-circle.icon-stack-base.actionBtnBase
-											i.icon-trash.actionBtnIcon
-
-							td
-								button.actionBtn(data-bind="click: pauseAgent, enable: queue")
-										span.icon-stack
-											i.icon-circle.icon-stack-base.actionBtnBase
-											i.icon-pause.actionBtnIcon
-
-							td
-								button.actionBtn(data-bind="click: toggleSpyForm, enable: isTalking(status())")
-										span.icon-stack
-											i.icon-circle.icon-stack-base.actionBtnBase
-											i.icon-headphones.actionBtnIcon
-						tr
-							td
-								|Remove
-							td
-								|Pause
-							td
-								|Monitor
-
-				div.spyAgentFormContainer
-					form#spyForm(data-bind="submit: spyAgent, checkStatusForSpy: status()")
-						div
-							label Supervisor Extension:
-							input(type="text" id="spyDst" name="supExtension" placeholder="Enter the Supervisor Extension")
-						button.gcsBtn(type="submit") Create
-						button.gcsBtn(data-bind="click: toggleSpyForm") Cancel		
-
+					div.infoValidData(data-bind="fadeVisible: id != ''")
+						center
+							button.gcsBtn(data-bind="click: clearQueueData")
+								|Dismiss
+						ul.infoAbandonedCalls
+							li(style="border: none;")
+								span.infoLabel Abandoned calls:&nbsp
+								span(data-bind="text: abandonedDay")
+							br
+							
+							div.abandonedCalls(data-bind='foreach: statsCalls')
+								li.infoQueueLi.liLeft
+									span.infoLabel From:&nbsp
+									span(data-bind="text: connectedlinename")
+								li.infoQueueLi.liRigth
+									span.infoLabel Date:&nbsp
+									span(data-bind="text: date")
 
 block gcsScripts
 	script(src="/javascripts/components/alertify.min.js")

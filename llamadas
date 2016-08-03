@@ -1,0 +1,635 @@
+EXTEN TO CEL
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/1014-0000021c
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+AccountCode: 
+Exten: 87230716
+Context: from-internal
+Uniqueid: 1437486111.8938
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/1014-0000021c
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+ConnectedLineNum: 
+ConnectedLineName: 
+Uniqueid: 1437486111.8938
+
+Event: ExtensionStatus
+Privilege: call,all
+Exten: 1014
+Context: ext-local
+Hint: SIP/1014&Custom:DND1014,CustomPresence:1014
+Status: 1
+
+Event: NewCallerid
+Privilege: call,all
+Channel: SIP/1014-0000021c
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+Uniqueid: 1437486111.8938
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Newchannel
+Privilege: call,all
+Channel: DAHDI/8-1
+ChannelState: 1
+ChannelStateDesc: Rsrvd
+CallerIDNum: 
+CallerIDName: 
+AccountCode: 
+Exten: 
+Context: from-pstn
+Uniqueid: 1437486111.8939
+
+Event: DAHDIChannel
+Privilege: call,all
+Channel: DAHDI/8-1
+Uniqueid: 1437486111.8939
+DAHDISpan: 1
+DAHDIChannel: 8
+
+Event: NewCallerid
+Privilege: call,all
+Channel: DAHDI/8-1
+CallerIDNum: 87230716
+CallerIDName: CID:1014
+Uniqueid: 1437486111.8939
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Newstate
+Privilege: call,all
+Channel: DAHDI/8-1
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: 87230716
+CallerIDName: CID:1014
+ConnectedLineNum: 1014
+ConnectedLineName: Mireya Montenegro
+Uniqueid: 1437486111.8939
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/1014-0000021c
+Destination: DAHDI/8-1
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+ConnectedLineNum: 87230716
+ConnectedLineName: CID:1014
+UniqueID: 1437486111.8938
+DestUniqueID: 1437486111.8939
+Dialstring: g0/87230716
+
+Event: Newstate
+Privilege: call,all
+Channel: DAHDI/8-1
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 87230716
+CallerIDName: CID:1014
+ConnectedLineNum: 1014
+ConnectedLineName: Mireya Montenegro
+Uniqueid: 1437486111.8939
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/1014-0000021c
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+ConnectedLineNum: 87230716
+ConnectedLineName: CID:1014
+Uniqueid: 1437486111.8938
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: DAHDI/8-1
+Uniqueid: 1437486111.8939
+AccountCode: 
+OldAccountCode: 
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/1014-0000021c
+Channel2: DAHDI/8-1
+Uniqueid1: 1437486111.8938
+Uniqueid2: 1437486111.8939
+CallerID1: 1014
+CallerID2: 87230716
+
+Event: Newchannel
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;1
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 
+CallerIDName: 
+AccountCode: 
+Exten: s
+Context: tc-maint
+Uniqueid: 1437486120.8940
+
+Event: Newchannel
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;2
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 
+CallerIDName: 
+AccountCode: 
+Exten: s
+Context: tc-maint
+Uniqueid: 1437486120.8941
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;1
+Uniqueid: 1437486120.8940
+AccountCode: 
+OldAccountCode: 
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;1
+CallerIDNum: 1
+CallerIDName: 1
+Uniqueid: 1437486120.8940
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: LocalBridge
+Privilege: call,all
+Channel1: Local/s@tc-maint-00000fdf;1
+Channel2: Local/s@tc-maint-00000fdf;2
+Uniqueid1: 1437486120.8940
+Uniqueid2: 1437486120.8941
+Context: tc-maint
+Exten: s
+LocalOptimization: Yes
+
+Event: Newstate
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;2
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1
+CallerIDName: 1
+ConnectedLineNum: 1
+ConnectedLineName: 1
+Uniqueid: 1437486120.8941
+
+Event: Newstate
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;1
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1
+CallerIDName: 1
+ConnectedLineNum: 1
+ConnectedLineName: 1
+Uniqueid: 1437486120.8940
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;1
+Uniqueid: 1437486120.8940
+AccountCode: 
+OldAccountCode: 
+
+Event: HangupRequest
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;2
+Uniqueid: 1437486120.8941
+
+Event: Hangup
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;1
+Uniqueid: 1437486120.8940
+CallerIDNum: 1
+CallerIDName: 1
+ConnectedLineNum: 1
+ConnectedLineName: 1
+AccountCode: 
+Cause: 0
+Cause-txt: Unknown
+
+Event: SoftHangupRequest
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;2
+Uniqueid: 1437486120.8941
+Cause: 16
+
+Event: Hangup
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fdf;2
+Uniqueid: 1437486120.8941
+CallerIDNum: 1
+CallerIDName: 1
+ConnectedLineNum: 1
+ConnectedLineName: 1
+AccountCode: 
+Cause: 0
+Cause-txt: Unknown
+
+Event: Registry
+Privilege: system,all
+ChannelType: SIP
+Username: greencore
+Domain: inbound18.vitelity.net
+Status: Registered
+
+Event: HangupRequest
+Privilege: call,all
+Channel: SIP/1014-0000021c
+Uniqueid: 1437486111.8938
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Unlink
+Bridgetype: core
+Channel1: SIP/1014-0000021c
+Channel2: DAHDI/8-1
+Uniqueid1: 1437486111.8938
+Uniqueid2: 1437486111.8939
+CallerID1: 1014
+CallerID2: 87230716
+
+Event: Hangup
+Privilege: call,all
+Channel: DAHDI/8-1
+Uniqueid: 1437486111.8939
+CallerIDNum: 87230716
+CallerIDName: CID:1014
+ConnectedLineNum: 1014
+ConnectedLineName: Mireya Montenegro
+AccountCode: 
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/1014-0000021c
+UniqueID: 1437486111.8938
+DialStatus: ANSWER
+
+Event: SoftHangupRequest
+Privilege: call,all
+Channel: SIP/1014-0000021c
+Uniqueid: 1437486111.8938
+Cause: 16
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/1014-0000021c
+Uniqueid: 1437486111.8938
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+ConnectedLineNum: 87230716
+ConnectedLineName: CID:1014
+AccountCode: 
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: ExtensionStatus
+Privilege: call,all
+Exten: 1014
+Context: ext-local
+Hint: SIP/1014&Custom:DND1014,CustomPresence:1014
+Status: 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CEL TO EXTEN
+
+Event: Newchannel
+Privilege: call,all
+Channel: DAHDI/12-1
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 
+CallerIDName: 
+AccountCode: 
+Exten: 
+Context: from-pstn
+Uniqueid: 1437486155.8942
+
+Event: DAHDIChannel
+Privilege: call,all
+Channel: DAHDI/12-1
+Uniqueid: 1437486155.8942
+DAHDISpan: 1
+DAHDIChannel: 12
+
+Event: NewCallerid
+Privilege: call,all
+Channel: DAHDI/12-1
+CallerIDNum: 87230716
+CallerIDName: 
+Uniqueid: 1437486155.8942
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: NewCallerid
+Privilege: call,all
+Channel: DAHDI/12-1
+CallerIDNum: 87230716
+CallerIDName: 87230716
+Uniqueid: 1437486155.8942
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Newstate
+Privilege: call,all
+Channel: DAHDI/12-1
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 87230716
+CallerIDName: 87230716
+ConnectedLineNum: 
+ConnectedLineName: 
+Uniqueid: 1437486155.8942
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/1014-0000021d
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+AccountCode: 
+Exten: 
+Context: from-internal
+Uniqueid: 1437486160.8943
+
+Event: ExtensionStatus
+Privilege: call,all
+Exten: 1014
+Context: ext-local
+Hint: SIP/1014&Custom:DND1014,CustomPresence:1014
+Status: 8
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: DAHDI/12-1
+Destination: SIP/1014-0000021d
+CallerIDNum: 87230716
+CallerIDName: 87230716
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1437486155.8942
+DestUniqueID: 1437486160.8943
+Dialstring: 1014
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/1014-0000021d
+ChannelState: 5
+ChannelStateDesc: Ringing
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+ConnectedLineNum: 87230716
+ConnectedLineName: 87230716
+Uniqueid: 1437486160.8943
+
+Event: ExtensionStatus
+Privilege: call,all
+Exten: 1014
+Context: ext-local
+Hint: SIP/1014&Custom:DND1014,CustomPresence:1014
+Status: 1
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/1014-0000021d
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+ConnectedLineNum: 87230716
+ConnectedLineName: 87230716
+Uniqueid: 1437486160.8943
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: SIP/1014-0000021d
+Uniqueid: 1437486160.8943
+AccountCode: 
+OldAccountCode: 
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: DAHDI/12-1
+Channel2: SIP/1014-0000021d
+Uniqueid1: 1437486155.8942
+Uniqueid2: 1437486160.8943
+CallerID1: 87230716
+CallerID2: 1014
+
+Event: HangupRequest
+Privilege: call,all
+Channel: SIP/1014-0000021d
+Uniqueid: 1437486160.8943
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Unlink
+Bridgetype: core
+Channel1: DAHDI/12-1
+Channel2: SIP/1014-0000021d
+Uniqueid1: 1437486155.8942
+Uniqueid2: 1437486160.8943
+CallerID1: 87230716
+CallerID2: 1014
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/1014-0000021d
+Uniqueid: 1437486160.8943
+CallerIDNum: 1014
+CallerIDName: Mireya Montenegro
+ConnectedLineNum: 87230716
+ConnectedLineName: 87230716
+AccountCode: 
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: ExtensionStatus
+Privilege: call,all
+Exten: 1014
+Context: ext-local
+Hint: SIP/1014&Custom:DND1014,CustomPresence:1014
+Status: 0
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: DAHDI/12-1
+UniqueID: 1437486155.8942
+DialStatus: ANSWER
+
+Event: SoftHangupRequest
+Privilege: call,all
+Channel: DAHDI/12-1
+Uniqueid: 1437486155.8942
+Cause: 16
+
+Event: Hangup
+Privilege: call,all
+Channel: DAHDI/12-1
+Uniqueid: 1437486155.8942
+CallerIDNum: 87230716
+CallerIDName: 87230716
+ConnectedLineNum: 1014
+ConnectedLineName: Mireya Montenegro
+AccountCode: 
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Registry
+Privilege: system,all
+ChannelType: SIP
+Username: greencore
+Domain: inbound18.vitelity.net
+Status: Registered
+
+Event: Newchannel
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;1
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 
+CallerIDName: 
+AccountCode: 
+Exten: s
+Context: tc-maint
+Uniqueid: 1437486180.8944
+
+Event: Newchannel
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;2
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 
+CallerIDName: 
+AccountCode: 
+Exten: s
+Context: tc-maint
+Uniqueid: 1437486180.8945
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;1
+Uniqueid: 1437486180.8944
+AccountCode: 
+OldAccountCode: 
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;1
+CallerIDNum: 0
+CallerIDName: 0
+Uniqueid: 1437486180.8944
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: LocalBridge
+Privilege: call,all
+Channel1: Local/s@tc-maint-00000fe0;1
+Channel2: Local/s@tc-maint-00000fe0;2
+Uniqueid1: 1437486180.8944
+Uniqueid2: 1437486180.8945
+Context: tc-maint
+Exten: s
+LocalOptimization: Yes
+
+Event: Newstate
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;2
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 0
+CallerIDName: 0
+ConnectedLineNum: 0
+ConnectedLineName: 0
+Uniqueid: 1437486180.8945
+
+Event: Newstate
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;1
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 0
+CallerIDName: 0
+ConnectedLineNum: 0
+ConnectedLineName: 0
+Uniqueid: 1437486180.8944
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;1
+Uniqueid: 1437486180.8944
+AccountCode: 
+OldAccountCode: 
+
+Event: HangupRequest
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;2
+Uniqueid: 1437486180.8945
+
+Event: Hangup
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;1
+Uniqueid: 1437486180.8944
+CallerIDNum: 0
+CallerIDName: 0
+ConnectedLineNum: 0
+ConnectedLineName: 0
+AccountCode: 
+Cause: 0
+Cause-txt: Unknown
+
+Event: SoftHangupRequest
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;2
+Uniqueid: 1437486180.8945
+Cause: 16
+
+Event: Hangup
+Privilege: call,all
+Channel: Local/s@tc-maint-00000fe0;2
+Uniqueid: 1437486180.8945
+CallerIDNum: 0
+CallerIDName: 0
+ConnectedLineNum: 0
+ConnectedLineName: 0
+AccountCode: 
+Cause: 0
+Cause-txt: Unknown

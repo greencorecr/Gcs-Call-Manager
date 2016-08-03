@@ -26,6 +26,7 @@ exports.set = function(req, res) {
 			user.username = userData.username;
 			user.role = userData.role;
 			user.email = userData.email;
+			user.exten = userData.exten;
 			if (userData.password) {
 				user.password = userData.password;
 			}

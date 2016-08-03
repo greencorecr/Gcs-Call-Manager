@@ -120,6 +120,28 @@ input:not([type=submit]) {
   position: fixed;
   right: 7px;
 }
+.infoQueueContainer {
+  float: right;
+  height: 88%;
+  border-radius: 50% / 15px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,5);
+  margin-top: 10px;
+  text-shadow: 0px 2px 1px rgba(0,0,0, 0.3);
+  position: fixed;
+  right: 7px;
+}
+.searchContainer {
+  background-color: rgba(0,0,0,0.7);
+  border-radius: 50% / 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,5);
+  text-shadow: 0px 2px 1px rgba(0,0,0, 0.3);
+  width:300px; 
+  float:left;
+  padding: 15px;
+  color: #ffe761;
+  margin-right: 20px;
+}
 
 #infoAgentData {
   height: 65%;
@@ -135,7 +157,7 @@ input:not([type=submit]) {
   color: #fff3ad;
 }
 
-.infoContainerUl {
+.infoContainerUl, .infoAbandonedCalls {
   font-size: 20px;
   line-height: 31px;
   list-style: none;
@@ -148,6 +170,30 @@ input:not([type=submit]) {
 
 .infoContainerUl .icon-stack-base {
   color: #fff3ad;
+}
+.infoAbandonedCalls li, .infoACDrop li{
+  border-bottom: 1px dotted #fff;
+}
+
+.infoQueueLi {
+  float:left;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.liLeft{
+  width: 227px; 
+
+}
+
+.liRigth{
+  width: 215px; 
+}
+
+.abandonedCalls{
+  width: 450px; 
+  height:460px; 
+  overflow:auto;
 }
 
 .infoIcon {
@@ -214,22 +260,46 @@ input:not([type=submit]) {
   margin-right: auto;
 }
 
-.statsData {
+.statsData, .statsDataReports {
   float: right;
   padding: 5px 5px;
   display: inline-block;
+}
+
+.statsDataReports {
+  padding: 0;
+}
+
+.statsData, .liHover {
   background-color: #007730;
   margin-right: 15px;
   border-radius: 15px 0 15px 0;
   box-shadow: 0 2px 2px rgba(0,0,0,1);
 }
 
-.stat {
+.stat, .liHover {
   display: inline-block;
   padding-left: 2px;
   padding-right: 2px;
   color: #63DB93;
 }
+
+.liHover {
+  padding: 5px;
+} 
+
+.liHover:hover {
+  background-color: #0C8F41;
+  border-radius: 15px 0 15px 0;
+}
+
+.liButton {
+  color: #ffe761;
+}  
+
+.liDynamic {
+  padding: 10px;
+} 
 
 .statValue {
   color: #fff3ad;
@@ -312,7 +382,7 @@ input:not([type=submit]) {
   overflow: hidden;
 }
 
-.agentDrop {
+.agentDrop, .queueDrop {
   display: none;
   position: absolute;
   padding-bottom: 5px;
@@ -326,7 +396,9 @@ input:not([type=submit]) {
   border: solid 2px #fff;
   z-index: 8;
 }
-
+.queueDrop {
+  width: 100%;
+}
 .agentsUl {
   list-style: none;
   display: inline;
@@ -429,12 +501,19 @@ span .icon-stack {
   width: 40%;
 }
 
-.user-list-container {
+.user-list-container, .queue-list-container {
   padding: 2em;
+}
+
+.user-list-container{
   width: 58%;
 }
 
-.user-list-ul {
+.queue-list-container {
+  width: 100%;
+}
+
+.user-list-ul, .call-list-ul {
   border-radius: 10px;
   padding: 0;
   list-style: none;
@@ -442,11 +521,11 @@ span .icon-stack {
   padding: 2em 1em;
 }
 
-.user-list-ul li {
+.user-list-ul li, .call-list-ul li {
   padding: 10px;
 }
 
-.user-list-ul li:first-child {
+.user-list-ul li:first-child, .call-list-ul li:first-child {
   background-color: black;
 }
 
@@ -456,7 +535,7 @@ span .icon-stack {
   border-top: 1px solid #fff;
 }
 
-.user-list-ul li:nth-child(odd) {
+.user-list-ul li:nth-child(odd), .call-list-ul li:nth-child(odd) {
   background-color: rgba(0,0,0,0.5);
 }
 
@@ -491,12 +570,40 @@ span .icon-stack {
   display: inline-block;
 }
 
+.call-field {
+  width: 25%;
+  display: inline-block;
+}
+
+.queueCall-field {
+  width: 32%;
+  display: inline-block;
+}
+
 .user-controls {
   clear: both;
 }
 
 .user-controls a {
   margin: 0 3px;
+}
+
+.queue{
+  color: #007730;
+  font-size: 16px;
+}
+
+.queue:hover{
+  color: #0C8F41;
+}
+
+.nav-pills > li.active > .queue, .nav-pills > li.active > .queue:hover, .nav-pills > li.active > .queue:focus {
+    color: #63DB93;
+    background-color: #0C8F41;
+}
+
+.nav > li > .queue:hover, .nav > li > .queue:focus {
+    background-color: #45B472;
 }
 
 /*-- End of Greencore QueueMonitor style --*/
@@ -507,7 +614,7 @@ span .icon-stack {
 }*/
 
 .modal-content {
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0,0,0,0.5);
   border-radius: 15px;
   border: 2px solid #fff;
   box-shadow: 0 2px 10px rgba(0,0,0,5);
@@ -515,6 +622,44 @@ span .icon-stack {
 }
 
 /** Media Queries **/
+
+
+@media(max-width:1510px){
+  .liLeft{
+    width: 200px; 
+
+  }
+  .liRigth{
+    width: 170px; 
+  }
+}
+@media(max-width:1300px){
+  .liLeft{
+    width: 180px; 
+
+  }
+  .liRigth{
+    width: 150px; 
+  }
+}
+@media(max-width:1170px){
+  .liLeft{
+    width: 160px; 
+
+  }
+  .liRigth {
+    width: 131px;
+  }
+}
+@media(max-width:992px){
+  .liLeft{
+    width: 188px; 
+
+  }
+  .liRigth {
+    width: 160px;
+  }
+}
 @media(max-width:767px){
   #barLogo {
     font-size: 12px;
@@ -543,5 +688,23 @@ span .icon-stack {
     font-size: 20px;
   }
 }
-@media(min-width:1200px){
+
+
+
+@media(max-height: 720px){
+  .abandonedCalls {
+    height: 380px;
+  }
+}
+
+@media(max-height: 650px){
+  .abandonedCalls {
+    height: 320px;
+  }
+}
+
+@media(max-height: 580px){
+  .abandonedCalls {
+    height: 270px;
+  }
 }

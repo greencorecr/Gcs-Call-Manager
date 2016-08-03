@@ -13,10 +13,10 @@ Change the IP of the PBX, as well as the user and password of you choosing.
 $ vim config/config.js
 
                 ami: {
-                        host: '10.42.20.20',
+                        host: 'manager-ip',
                         port: 'default',
-                        username: 'dev',
-                        password: 'phos7oH6'
+                        username: 'user',
+                        password: 'password'
                 }
 
 
@@ -26,7 +26,7 @@ Add a Manager user to the Asterisk AMI. Remember to use the same user/password
 as in the config/config.js configuration file.
 $ sudo vim /etc/asterisk/manager.conf
 [dev]
-secret=phos7oH6
+secret=password
 deny=0.0.0.0/0.0.0.0
 permit=manager-ip/255.255.255.255
 read=system,call,log,verbose,command,agent,user
