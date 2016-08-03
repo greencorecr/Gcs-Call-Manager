@@ -60,7 +60,7 @@ exports.freshData = function (data, cb) {
 				var j = queues[0].queues.length - 1;
 				for (var i = 1; i < queueArray.length; i++) {
 					// console.log(queues[0].queues[j]);
-					queueArray[i].abandoned = queues[0].queues[j--].abandoned;
+//ERROR					queueArray[i].abandoned = queues[0].queues[j--].abandoned;
 				};//for i
 				// console.log("antes de enviar a app");
 	 			return cb(queueArray);
@@ -81,31 +81,31 @@ exports.freshData = function (data, cb) {
 
 
 exports.abandoned = function(cb){
-	queue.find({}, function (err, queues) {
+	queue.find({},function (err, queues) {
 		var colas = queues[0];
-		// console.log(colas)
+		 console.log(colas)
 		Event.find({channel: {'$regex': /SIP/}, '$and': [{'events.status': {'$ne': 'Up'}}, {'events.status': 'Ringing'}, {'events.name': 'Hangup'}, {'events.epoch': {'$gte' : colas.epoch}}]}).exec( function (err, ami_datos){
 			for (var i = 0; i < ami_datos.length; i++) {
-				// console.log(ami_datos[i]);
-				var splitConnectedName = ami_datos[i].connectedlinename.split('-');
-				if(splitConnectedName.length > 1){
+				 console.log(ami_datos[i]);
+				var splitCallerIdName = ami_datos[i].calleridname.split('-');
+				if(splitCallerIdName.length > 1){
+				
+					splitCallerIdName[0] == 'RE' ? colas.queues[0].abandoned = parseInt(colas.queues[0].abandoned) + 1 : // 0 :
+					splitCallerIdName[0] == 'ST' ? colas.queues[1].abandoned = parseInt(colas.queues[1].abandoned) + 1 : // 0 :
+					splitCallerIdName[0] == 'VE' ? colas.queues[2].abandoned = parseInt(colas.queues[2].abandoned) + 1 : // 0 :
+					splitCallerIdName[0] == 'CU' ? colas.queues[3].abandoned = parseInt(colas.queues[3].abandoned) + 1 : // 0 :
+									colas.queues[4].abandoned = parseInt(colas.queues[4].abandoned) + 1 ; // 0 :
+				   					
 				/*
-					splitConnectedName[0] == 'RE' ? colas.queues[0].abandoned = parseInt(colas.queues[0].abandoned) + 1 : // 0 :
-					splitConnectedName[0] == 'ST' ? colas.queues[1].abandoned = parseInt(colas.queues[1].abandoned) + 1 : // 0 :
-					splitConnectedName[0] == 'VE' ? colas.queues[2].abandoned = parseInt(colas.queues[2].abandoned) + 1 : // 0 :
-					splitConnectedName[0] == 'CU' ? colas.queues[3].abandoned = parseInt(colas.queues[3].abandoned) + 1 : // 0 :
-					splitConnectedName[0] == 'CO' ? colas.queues[4].abandoned = parseInt(colas.queues[4].abandoned) + 1 : // 0 :
-				   					colas.queues[5].abandoned = parseInt(colas.queues[5].abandoned) + 1 ; // 0 ;
-				*/
 					// console.log(ami_datos[i]);
 					var h = 0, noEnd = true;
-        	                        while(h < queues.queues.length && noEnd) {
- 	                                       if(splitCallerIdName[0] == queues.queues[h].code){
+        	                        while(h < colas.queues.length && noEnd) {
+ 	                                       if(splitConnectedName[0] == colas.queues[h].code){
                                 	             	colas.queues[h].abandoned = parseInt(colas.queues[h].abandoned) + 1;
                         	                        noEnd = false;
                 	                        }
         	                                h++;
-	                                }
+	                                }*/
 
 				}
 				if(i == ami_datos.length - 1){
@@ -118,7 +118,7 @@ exports.abandoned = function(cb){
 
 			colas.save(function (err, cola){
 				if(err) console.log(err);
-				console.log(colas);
+				//console.log(colas);
 				return cb();
 
 			});
@@ -140,8 +140,10 @@ function abandonedCalls (queueArray, cb){
 		var abandonedCalls = [];//new Array(tamQueue);
 		for (var i = 0; i < tamQueue; i++){
 			abandonedCalls[i] = new Array();
-		} console.log(ami_datos.length)
-		 console.log(abandonedCalls);
+		} 
+	console.log(queueArray.length);
+	console.log(abandonedCalls);
+		try{	
 		for (var i = 0; i < ami_datos.length; i++) {
 
 			var splitCallerIdName = ami_datos[i].calleridname.split('-');
@@ -171,6 +173,9 @@ function abandonedCalls (queueArray, cb){
 			(ami_datos.length != 0)? queueArray[j].abandonedDay = abandonedCalls[k].length : queueArray[j].abandonedDay = 0;
 		};
 		return cb(queueArray);
+		} catch(ex){
+			return cb(queueArray);
+		}
 	  });//queue
 	});//eventos
 }
@@ -190,7 +195,7 @@ exports.queueReport = function (queueArray, cb){
 				abandonedCalls[i] = new Array();
 				completedCalls[i] = new Array();
 			}
-			
+			try{	
 			for (var i = 0; i < abandoned.length; i++) {
 				
 				var splitCallerIdName = abandoned[i].calleridname.split('-');
@@ -253,6 +258,15 @@ exports.queueReport = function (queueArray, cb){
 			};
 			// console.log(queueArray);
 			return cb(queueArray);
+			}catch(ex){
+				 for (var j = 1, k = queueArray.length - 2; j < queueArray.length; j++, k--) {
+        	                        queueArray[j].statsCalls.push({calls: [], name: "Completed: ", length: 0});
+                	                queueArray[j].statsCalls.push({calls: [], name: "Abandoned: ", length: 0});
+                        	        queueArray[j].abandonedDay = 0;
+ 		                  };
+                       	 	// console.log(queueArray);
+                        	return cb(queueArray);
+			}
 		  });//queues 
 		});//eventos
 	});//eventos
