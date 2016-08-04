@@ -29,11 +29,12 @@ require('./config/passport')(passport, config);
  *
  * set env var GCS_NODEREFRESH to the string 'true' if you want to leave the database as is
  *
- */
-if ('development' === env && 'true' !== process.env.GCS_NOREFRESH) {
+*/
+
+/*if ('development' === env && 'true' !== process.env.GCS_NOREFRESH) {
 	console.log('Data is beeing loaded into database, all prev data in the collections is lost');
 	require('./config/initDevData');
-}
+}*/
 
 var app = express();
 

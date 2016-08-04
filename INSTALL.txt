@@ -13,10 +13,10 @@ Change the IP of the PBX, as well as the user and password of you choosing.
 $ vim config/config.js
 
                 ami: {
-                        host: '10.42.20.20',
+                        host: 'manager-ip',
                         port: 'default',
-                        username: 'dev',
-                        password: 'phos7oH6'
+                        username: 'user',
+                        password: 'password'
                 }
 
 
@@ -24,7 +24,9 @@ On the PBX server with asterisk:
 
 Add a Manager user to the Asterisk AMI. Remember to use the same user/password
 as in the config/config.js configuration file.
+
 $ sudo vim /etc/asterisk/manager.conf
+
 [dev]
 secret=phos7oH6
 deny=0.0.0.0/0.0.0.0
@@ -32,8 +34,25 @@ permit=manager-ip/255.255.255.255
 read=system,call,log,verbose,command,agent,user
 write=system,call,log,verbose,command,agent,user
 
+
+Add, at the end of the file, the following lines.
+
+$ sudo vim /etc/asterisk/extensions_custom.conf
+
+
+[app-chanspy-gcs]
+exten => 556,1,Macro(user-callerid,)
+exten => 556,n,Answer
+exten => 556,n,Wait(1)
+exten => 556,n,ChanSpy(SIP/${agent:5:4},q)
+exten => 556,n,Hangup
+
+[from-internal]
+include => app-chanspy-gcs
+
+
 $ sudo asterisk -rc
-asterisk> reload
+asterisk> core reload
 
 Now you can visit the Call Manager to review the results:
 
