@@ -13,19 +13,19 @@ block gcsNavbarItems
 		li
 			a(href="/queueMonitor")
 				i.icon-desktop.icon-large 
-				|&nbsp;Queues
+				|&nbsp;Colas
 		li.active
 			a(href="#")
 				i.icon-user.icon-large 
-				|&nbsp;Users
+				|&nbsp;Usuarios
 		li
 			a(href="/logout")
 				i.icon-off.icon-large 
-				|&nbsp;Logout
+				|&nbsp;Cerrar Sesión 
 		li
 			a(data-toggle="modal" href="#helpModal")
 				i.icon-question-sign.icon-large
-				|&nbsp;Help
+				|&nbsp;Ayuda
 
 block content
 	div.user-admin-container
@@ -33,11 +33,11 @@ block content
 			ul.user-list-ul
 				li.user-list-header
 					span.user-field
-						|Name
+						|Nombre
 					span.user-field
-						|User
+						|Usuario
 					span.user-field
-						|E-mail
+						|Correo Electrónico
 				<!-- ko foreach: users -->
 				li.user-list-user(data-bind="click: markSelectedUser, css: {isSelected: id === $root.selectedUser().id}")
 					span.user-field.user-list-name(data-bind="text: name")
@@ -50,49 +50,49 @@ block content
 					span.user-list-control-add.gcsBtn(data-bind="click: newUser")
 						i.icon-plus.icon-2x
 		div.user-form-container.infoContainer(data-bind="with: selectedUser")
-			h1(data-bind="visible: !id") Select a user
-			h1(data-bind="visible: id") User:&nbsp;
+			h1(data-bind="visible: !id") Seleccionar un Usuario
+			h1(data-bind="visible: id") Usuario:&nbsp;
 				span(data-bind="visible: 'new' == id")
-					|New
+					|Nuevo
 				span(data-bind="text: name")
 			form#createUser(data-bind="visible: id" role="form")
 				div.form-group.user-name
 					label.control-label.col-md-5(for='name')
-						|Name:
+						|Nombre:
 					div.col-md-7
 						input.form-control(name='name', placeholder='Name' data-bind="value: name")
 				div.form-group.user-username
 					label.control-label.col-md-5(for='username')
-						|User:
+						|Usuario:
 					div.col-md-7
 						input.form-control(name='username' placeholder='User' data-bind="value: username")
 				div.form-group.user-password
 					label.control-label.col-md-5(for='password')
-						|Password:
+						|Contraseña:
 					div.col-md-7
 						input.form-control(type='password' name='password' placeholder='Password' data-bind="value: password")
 				div.form-group.user-email
 					label.control-label.col-md-5(for='email')
-						|E-mail:
+						|Correo Electrónico:
 					div.col-md-7
 						input.form-control(type='email' name='email' placeholder='E-mail' data-bind="value: email")
 				div.form-group.user-role
 					label.control-label.col-md-5(for='role')
-						|Is this an administrator?:
+						|¿Es este un administrador?:
 					div.col-md-7
 						label.user-options No
 							input(type='radio' name='role' value='0' data-bind="checked: role")
-						label.user-options Yes
+						label.user-options Sí
 							input(type='radio' name='role' value='1' data-bind="checked: role")
 				br
 				div.form-group.user-controls
 					div.col-md-4.col-md-offset-4
 						a.gcsBtn#save(data-bind="click: saveUser")
-							|Save
+							|Guardar
 						a.gcsBtn#delete(data-bind="click: deleteUser")
-							|Delete
+							|Borrar
 						a.gcsBtn#cancel(data-bind="click: clearSelectedUser")
-							|Cancel
+							|Cancelar
 
 block gcsScripts
 	script(src="/javascripts/components/alertify.min.js")

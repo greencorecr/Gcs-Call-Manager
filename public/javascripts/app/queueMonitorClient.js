@@ -154,7 +154,7 @@ var AppViewModel = ko.viewmodel.fromModel(queueArray, {
 	extend: {
 		'{root}': function(root) {
 			root.selectedAgent = ko.observable({
-				name: 'Select an agent', 
+				name: 'Seleccione un agente', 
 				queue:false,
 				location:'',
 				stInterface:'',
@@ -337,7 +337,7 @@ function markSelectedAgent(data, evt) {
 function clearAgentData(data, evt) {
 	/* jshint unused:false */
 	$('#infoAgentData').fadeOut('400', function(){
-		AppViewModel.selectedAgent({name: 'Select an agent',
+		AppViewModel.selectedAgent({name: 'Seleccione un agente',
 			queue: false,
 			location:'',
 			stInterface:'',

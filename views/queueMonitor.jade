@@ -10,27 +10,27 @@ block gcsNavbarItems
 		//-li
 			//-a(href="/")
 				//-i.icon-home.icon-large
-				//-|&nbsp;Home
+				//-|&nbsp;Inicio
 		li.active
 			a(href="#")
 				i.icon-desktop.icon-large 
-				|&nbsp;Queues
+				|&nbsp;Colas
 		//-li
 			//-a(href="/profile")
 				//-i.icon-user.icon-large 
-				//-|&nbsp;Profile
+				//-|&nbsp;Perfil
 		li
 			a(href="/userAdmin")
 				i.icon-user.icon-large 
-				|&nbsp;Users
+				|&nbsp;Usuarios
 		li
 			a(href="/logout")
 				i.icon-off.icon-large 
-				|&nbsp;Logout
+				|&nbsp;Cerrar sesión
 		li
 			a(data-toggle="modal" href="#helpModal")
 				i.icon-question-sign.icon-large
-				|&nbsp;Help
+				|&nbsp;Ayuda
 
 block content
 	div.modal.fade#helpModal(tabindex="-1" role="dialog" aria-labeledby="helpModalLabel" aria-hidden="true")
@@ -40,35 +40,35 @@ block content
 					button.close(type="button" data-dismiss="modal" aria-hidden="true")
 						i.icon-remove
 					h4#helpModalLabel
-						|GCS QueueMonitor Help
+						|Ayuda - GCS Monitor de Colas
 				div.modal-body
 					ul
-						li To Hide a full Queue Click on the Queue's top label
-						li To Select an Agent Click on the agent's icon
-						li To Remove an Agent from a Queue, select it and click the remove button
-						li To Pause an Agent in a Queue, select it and click the pause button
-						li To Monitor an Agent, select it, click the Monitor button, enter the Supervisor's extension and click "Create", a call will be sent to the Supervisor with the Agent's audio
+						li Para ocultar una Cola llena haga clic en la etiqueta del nombre de la Cola.
+						li Para seleccionar a un Agente haga clic en el icono del agente.
+						li Para remover a un Agente de una Cola, debe seleccionarlo y dar clic en el botón “Remover”.
+						li Para dar a pausa a un Agente en una Cola, debe seleccionarlo y dar clic en el botón de “Pausar”.
+						li Para monitorear un Agente, debe seleccionarlo, y dar clic en el botón “Monitorear”, introducir la extensión del supervisor y dar clic en "Crear". Una llamada será enviada a la extensión del Supervisor con el audio de la llamada activa.
 				div.modal-footer
 					button.btn.btn-default(type="button" data-dismiss="modal")
-						|Close
+						|Cerrar
 	div.modal.fade#chanspyModal(tabindex="-1" role="dialog" aria-labeledby="chanspyModalLabel" aria-hidden="true")
 		div.modal-dialog
 			div.modal-content(data-bind="with: selectedAgent")
 				div.modal-header
 					button.close(type="button" data-dismiss="modal" aria-hidden="true")
 				h4#chanspyModalLabel
-					|Please enter the supervisor's extension
+					|Por favor ingrese la extensión del Supervisor
 				div.modal-body
 					div.spyAgentFormContainer
 						form#spyFormMobil(data-bind="submit: spyAgent, checkStatusForSpy: status()")
 							div
-								label Supervisor Extension:
-								input(type="text" id="spyDstMobil" name="supExtension" placeholder="Enter the Supervisor Extension")
-							button.gcsBtn(type="submit") Create
-							button.gcsBtn(data-dismiss="modal") Cancel
+								label Extensión del Supervisor:
+								input(type="text" id="spyDstMobil" name="supExtension" placeholder="Extensión del supervisor")
+							button.gcsBtn(type="submit") Crear
+							button.gcsBtn(data-dismiss="modal") Cancelar
 				div.modal-footer
 					button.btn.btn-default(type="button" data-dismiss="modal")
-						|Close
+						|Cerrar
 	div.row#dataContainer
 		div.col-md-8.col-sm-6
 			<!-- ko foreach: $data.queues -->
@@ -76,20 +76,20 @@ block content
 			div.queueHead(data-bind="attr: {'id': id}")
 				div.queueStats
 					div.queueID(data-bind="click: hideQueue, updateViewPrefs: id()")
-						|Agents in Queue 
+						|Agentes en la Cola 
 						span(data-bind="text: id")
 					div.statsData
 						div.stat
-							|Completed: 
+							|Completadas: 
 							span.statValue(data-bind="text: completed")
 						div.stat
-							|Abandoned: 
+							|No contestadas: 
 							span.statValue(data-bind="text: abandoned")
 						div.stat
-							|Hold Time: 
-							span.statValue(data-bind="text: holdtime")
+							|Promedio segundos en espera: 
+							span.statValue(data-bind="text: holdtime") 
 						div.stat
-							|Wait Time:
+							|Llamadas en espera: 
 							span.statValue(data-bind="text: waiting_calls")
 
 				<!-- ko if: agents().length < 1 -->
@@ -110,7 +110,7 @@ block content
 									|ext.
 									span(data-bind="text: id")
 									span(data-bind="visible: paused() == 1")
-										| &nbsp;--> Paused
+										| &nbsp;--> En pausa
 						div.agentDrop
 							ul.agentsUl.infoContainerUl
 								li.agentName
@@ -118,27 +118,27 @@ block content
 									span(data-bind="text: name")
 								li(data-bind="visible: paused() == 1")
 									i.icon-pause
-									|&nbsp;Paused
+									|&nbsp;En pausa
 								li
-									span.infoLabel The agent is now:&nbsp
+									span.infoLabel El agente se encuentra:&nbsp
 									span(data-bind="text: statusName")
 									span.infoIcon(data-bind="statusIcon: status()")
 								li
-									span.infoLabel And is talking to:&nbsp;
+									span.infoLabel Está hablando con:&nbsp;
 									span(data-bind="text: caller")
 									span.infoIcon.icon-stack
 										i.icon-circle-blank.icon-stack-base
 										i.icon-comments-alt
 								li
-									span.infoLabel The last call was:&nbsp;
+									span.infoLabel  La última llamada fue:&nbsp;
 									span(data-bind="text: lastCall")
 									span.infoIcon.icon-stack
 										i.icon-circle-blank.icon-stack-base
 										i.icon-time
 								li
-									span.infoLabel Has taken:&nbsp;
+									span.infoLabel Ha tomado:&nbsp;
 									span(data-bind="text: taken")
-									span.infoLabel &nbsp;calls
+									span.infoLabel &nbsp;Llamadas
 									span.infoIcon.icon-stack
 										i.icon-circle-blank.icon-stack-base
 										i.icon-check
@@ -169,35 +169,35 @@ block content
 				div.infoValidData(data-bind="fadeVisible: queue")
 					center
 						h4
-							span.infoLabel Information for queue:&nbsp;
+							span.infoLabel Información de la cola:&nbsp;
 							span(data-bind="text: queue")
 						h2
 							span(data-bind="text: id")
 							span(data-bind="fadeVisible: paused() == 1")
-								|&nbsp;/&nbsp;Paused
+								|&nbsp;/&nbsp;En pausa
 						button.gcsBtn(data-bind="click: clearAgentData")
-							|Dismiss
+							|Descartar
 					ul.infoContainerUl
 						li
-							span.infoLabel The agent is now:&nbsp
+							span.infoLabel El agente se encuentra:&nbsp
 							span(data-bind="text: statusName")
 							span.infoIcon(data-bind="statusIcon: status()")
 						li
-							span.infoLabel And is talking to:&nbsp;
+							span.infoLabel Está hablando con:&nbsp;
 							span(data-bind="text: caller")
 							span.infoIcon.icon-stack
 								i.icon-circle-blank.icon-stack-base
 								i.icon-comments-alt
 						li
-							span.infoLabel The last call was:&nbsp;
+							span.infoLabel La última llamada fue:&nbsp;
 							span(data-bind="text: lastCall")
 							span.infoIcon.icon-stack
 								i.icon-circle-blank.icon-stack-base
 								i.icon-time
 						li
-							span.infoLabel Has taken:&nbsp;
+							span.infoLabel Ha tomado:&nbsp;
 							span(data-bind="text: taken")
-							span.infoLabel &nbsp;calls
+							span.infoLabel &nbsp;Llamadas
 							span.infoIcon.icon-stack
 								i.icon-circle-blank.icon-stack-base
 								i.icon-check
@@ -225,19 +225,19 @@ block content
 											i.icon-headphones.actionBtnIcon
 						tr
 							td
-								|Remove
+								|Remover
 							td
-								|Pause
+								|Pausar
 							td
-								|Monitor
+								|Monitorear
 
 				div.spyAgentFormContainer
 					form#spyForm(data-bind="submit: spyAgent, checkStatusForSpy: status()")
 						div
-							label Supervisor Extension:
-							input(type="text" id="spyDst" name="supExtension" placeholder="Enter the Supervisor Extension")
-						button.gcsBtn(type="submit") Create
-						button.gcsBtn(data-bind="click: toggleSpyForm") Cancel		
+							label Extensión del Supervisor:
+							input(type="text" id="spyDst" name="supExtension" placeholder="Extensión del supervisor")
+						button.gcsBtn(type="submit") Crear
+						button.gcsBtn(data-bind="click: toggleSpyForm") Cancelar	
 
 
 block gcsScripts

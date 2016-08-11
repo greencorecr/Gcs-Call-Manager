@@ -45,7 +45,7 @@ function makeAgent (queue, name, location, stInterface, membership, lastcall, st
   this.paused      = paused; //Is Agent Paused?
   this.taken       = taken; //Calls Taken
   this.penalty     = penalty; //Agent penalty
-  this.caller      = 'no one';
+  this.caller      = 'Nadie';
   this.id          = location.replace(/Local\//,'').replace(/@from-queue\/n/,''); //clean up for ID
   this.age         = 0; //If age > 0 then is no longer in queue
 }
@@ -53,7 +53,7 @@ function makeAgent (queue, name, location, stInterface, membership, lastcall, st
 function utimeToDate(utime) { //Insert asterisk epoch into a JS Date object
   var date = moment(utime*1000);
   if (2010 > date.year()) {
-    return 'never';
+    return 'Nunca';
   }
 	return date.fromNow();
 }
@@ -61,23 +61,23 @@ function utimeToDate(utime) { //Insert asterisk epoch into a JS Date object
 function getStatusByName(status) { //Return the status description from the code
   switch (status) {
     case '1':
-      return 'Available';
+      return 'Disponible';
     case '2':
-      return 'In use';
+      return 'En uso';
     case '3':
-      return 'Busy';
+      return 'Ocupado';
     case '4':
-      return 'Invalid';
+      return 'Inválido';
     case '5':
-      return 'Not Available';
+      return 'No disponible';
     case '6':
-      return 'Ringing';
+      return 'Timbrando';
     case '7':
-      return 'In use and Ringing';
+      return 'En uso y timbrando';
     case '8':
-      return 'On Hold';
+      return 'En espera';
     default:
-      return 'Unknown';
+      return 'Desconocido';
   }
 }
 
@@ -233,8 +233,8 @@ function getCallersId(ami_datos) {
     }
     if (-1 !== agentId && (callerId !== queueArray[qInd].agents[agentId].id)) {
       var lastCaller = queueArray[qInd].agents[agentId].caller;
-      if (('no one' === lastCaller) || (callerId)) {        
-        queueArray[qInd].agents[agentId].caller = callerId || 'Unknown*';
+      if (('Nadie' === lastCaller) || (callerId)) {        
+        queueArray[qInd].agents[agentId].caller = callerId || 'Desconocido';
       }
     }
   }
