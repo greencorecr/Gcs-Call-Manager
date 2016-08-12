@@ -51,6 +51,8 @@ function makeAgent (queue, name, location, stInterface, membership, lastcall, st
 }
 
 function utimeToDate(utime) { //Insert asterisk epoch into a JS Date object
+  // Se agrega la siguiente línea para especificar el idioma español del módulo 'moment'
+  moment.locale("es");
   var date = moment(utime*1000);
   if (2010 > date.year()) {
     return 'Nunca';
