@@ -5,12 +5,11 @@
 
 var express = require('express'),
 	http = require('http'),
-//	fs = require('fs'),
 	passport = require('passport'),
 	GcsAmi = require('./gcs_modules/gcs_ami'),
 	gcsAmi = new GcsAmi();
 
-var env = process.env.NODE_ENV || 'development',
+var env = process.env.NODE_ENV || 'production',
 	config = require('./config/config')[env],
 	cookie = require('express/node_modules/cookie'),
 	connect = require('express/node_modules/connect'),
@@ -23,18 +22,13 @@ require('./models/user'); //If more models change to "for *js"
 require('./config/passport')(passport, config);
 
 
-/**
- * To ease development process, we create some initial users, don't use them in production before changing their passwords or 
- *  creating your own users
- *
- * set env var GCS_NODEREFRESH to the string 'true' if you want to leave the database as is
- *
-*/
+// To ease development process, we create some initial users, don't use them in production before changing their passwords or creating your own users.
+//  To populate the users, you have to uncomment the following lines just the first time is executed the application:
 
-/*if ('development' === env && 'true' !== process.env.GCS_NOREFRESH) {
-	console.log('Data is beeing loaded into database, all prev data in the collections is lost');
-	require('./config/initDevData');
-}*/
+// if ('production' === env && 'true' !== process.env.GCS_NOREFRESH) {
+// 	console.log('Data is beeing loaded into database, all prev data in the collections is lost');
+// 	require('./config/initDevData');
+// }
 
 var app = express();
 
