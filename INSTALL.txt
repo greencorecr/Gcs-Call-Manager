@@ -39,13 +39,13 @@ $ sudo vim /etc/asterisk/extensions_custom.conf
 exten => 556,1,Macro(user-callerid,)
 exten => 556,n,Answer
 exten => 556,n,Wait(1)
-;exten => 556,n,NoOp(SIP/${agent:5:4})
 ; "agent" variable comes in this way  =>  hint:extension@ext-local
 ; So is needed cut the variable to extract only extension number:
 ; From the fifth character, use X characters, where X means the size
-; (number of digits) of extensions numbers 
-;exten => 556,n,ChanSpy(SIP/${agent:5:X},q)
-;exten => 556,n,Hangup
+; (number of digits) of extensions numbers. For example 4 digits
+; could be extensions from 1000 to 9999
+exten => 556,n,ChanSpy(SIP/${agent:5:4},q)
+exten => 556,n,Hangup
 
 [from-internal]
 include => app-chanspy-gcs
