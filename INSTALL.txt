@@ -19,41 +19,42 @@ $ vim config/config.js
                         password: 'password'
                 }
 
-
+-------------------------------------------------------------------------------
 On the PBX server with asterisk:
 
 Add a Manager user to the Asterisk AMI. Remember to use the same user/password
 as in the config/config.js configuration file.
-
 $ sudo vim /etc/asterisk/manager.conf
-
 [dev]
-secret=phos7oH6
+secret=password
 deny=0.0.0.0/0.0.0.0
 permit=manager-ip/255.255.255.255
 read=system,call,log,verbose,command,agent,user
 write=system,call,log,verbose,command,agent,user
 
-
-Add, at the end of the file, the following lines.
-
+Add chan_spy extension for monitor functionallity:
 $ sudo vim /etc/asterisk/extensions_custom.conf
-
 
 [app-chanspy-gcs]
 exten => 556,1,Macro(user-callerid,)
 exten => 556,n,Answer
 exten => 556,n,Wait(1)
-exten => 556,n,ChanSpy(SIP/${agent:5:4},q)
-exten => 556,n,Hangup
+;exten => 556,n,NoOp(SIP/${agent:5:4})
+; "agent" variable comes in this way  =>  hint:extension@ext-local
+; So is needed cut the variable to extract only extension number:
+; From the fifth character, use X characters, where X means the size
+; (number of digits) of extensions numbers 
+;exten => 556,n,ChanSpy(SIP/${agent:5:X},q)
+;exten => 556,n,Hangup
 
 [from-internal]
 include => app-chanspy-gcs
 
 
-$ sudo asterisk -rc
-asterisk> core reload
+Apply changes reloading asterisk configuration:
+$ sudo asterisk -x 'core reload'
 
+-------------------------------------------------------------------------------
 Now you can visit the Call Manager to review the results:
 
 http://manager-ip:3001/login
