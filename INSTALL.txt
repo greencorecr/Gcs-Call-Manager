@@ -6,6 +6,7 @@ On the Ubuntu server that will run the Call Manager:
 $ sudo apt-get install nodejs mongodb git npm
 $ git clone https://github.com/soporte-greencore/Gcs-Call-Manager.git
 $ cd Gcs-Call-Manager/
+$ git checkout produccion-español 
 $ npm install
 $ sudo npm install -g grunt-cli
 
