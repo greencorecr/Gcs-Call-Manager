@@ -1,13 +1,13 @@
 /*
-* Greencore Solutions Queue Monitor, 
-* Configuration options for Development and Production enviroments
-*
-* db   is for mongodb db to use
-* root is the application's root path 
-* app  is the application's details
-* ami  is the location, username and secret for the Asterisk host to monitor
-*
-*/
+ * * Greencore Solutions Queue Monitor, 
+ * * Configuration options for Development and Production enviroments
+ * *
+ * * db   is for mongodb db to use
+ * * root is the application's root path 
+ * * app  is the application's details
+ * * ami  is the location, username and secret for the Asterisk host to monitor
+ * *
+ * */
 
 
 
@@ -23,10 +23,10 @@ module.exports = {
 			name: 'Greencore Solutions Queue Monitor'
 		},
 		ami: {
-			host: 'manager-ip',
+			host: '10.42.20.20',
 			port: 'default',
-			username: 'user',
-			password: 'password'
+			username: 'dev',
+			password: 'eish9Eix'
 		}
 	},
 	production: {
@@ -37,10 +37,10 @@ module.exports = {
 			name: 'Greencore Solutions Queue Monitor'
 		},
 		ami: {
-			host: 'manager-ip',
+			host: '10.42.20.20',
 			port: 'default',
-			username: 'user',
-			password: 'password'
+			username: 'dev',
+			password: 'eish9Eix'
 		}
 	}
 };
