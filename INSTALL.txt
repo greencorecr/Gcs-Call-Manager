@@ -8,7 +8,7 @@ $ git clone https://github.com/soporte-greencore/Gcs-Call-Manager.git
 $ cd Gcs-Call-Manager/
 $ git checkout produccion-español 
 $ npm install
-$ sudo npm install -g grunt-cli
+$ sudo npm install -g grunt-cli [optional]
 
 Change the IP of the PBX, as well as the user and password of you choosing.
 $ vim config/config.js
@@ -56,11 +56,20 @@ Apply changes reloading asterisk configuration:
 $ sudo asterisk -x 'core reload'
 
 -------------------------------------------------------------------------------
-Now you can visit the Call Manager to review the results:
+Now you can start and visit the Call Manager to review the results:
+
+$ nodejs app.js
+
 
 http://manager-ip:3001/login
-username: admin
-password: greencoreAdmin
+
+Administrator:
+- username: admin
+- password: greencoreAdmin
+
+User:
+- username: greencore
+- password: greencore
 
 As a final step, secure the system by reviewing the created users and 
 changing their passwords.
